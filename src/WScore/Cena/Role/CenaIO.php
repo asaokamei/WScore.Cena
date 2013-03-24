@@ -38,6 +38,18 @@ class CenaIO extends DataIO
     }
 
     /**
+     * @param array       $data
+     * @return self
+     */
+    public function load( $data=array() )
+    {
+        if( empty( $data ) ) $data = $_POST;
+        $data = $this->cena->getDataForCenaId( $data, $this->entity->getCenaId() );
+        parent::load( $data[ 'prop' ] );
+        return $this;
+    }
+
+    /**
      * @param \WScore\Html\Tags $html
      * @param string            $type
      * @return void

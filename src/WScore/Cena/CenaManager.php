@@ -39,6 +39,29 @@ class CenaManager
     }
 
     /**
+     * @param array  $data
+     * @param string $cenaId
+     * @return array
+     */
+    public function getDataForCenaId( $data, $cenaId=null )
+    {
+        // the data is not in Cena format. 
+        // return the data as is. 
+        if( !isset( $data[ $this->cena ] ) ) return $data;
+        // OK, got Cena formatted data. 
+        $data = $data[ $this->cena ];
+        if( !$cenaId ) return $data;
+
+        // get data for a specific cenaID. 
+        $cena = explode( '.', $cenaId );
+        foreach( $cena as $item ) {
+            if( !isset( $data[ $item ] ) ) return array();
+            $data = $data[ $item ];
+        }
+        return $data;
+    }
+
+    /**
      * @param \WScore\DataMapper\Entity\EntityInterface $entity
      * @return \WScore\DataMapper\Role\RoleInterface
      */
