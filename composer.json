@@ -10,5 +10,10 @@
             "email": "kamei@workspot.jp"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "WScore\\Cena": "src/"
+        }
+    }
 }
