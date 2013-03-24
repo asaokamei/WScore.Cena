@@ -1,12 +1,12 @@
 {
-    "name": "asaokamei/wscore.cena",
+    "name": "wscore/cena",
     "description": "Resource oriented data transfer agent.",
     "require": {
         "wscore/datamapper": "dev-master"
     },
     "authors": [
         {
-            "name": "Asao",
+            "name": "Asao Kamei",
             "email": "kamei@workspot.jp"
         }
     ],
