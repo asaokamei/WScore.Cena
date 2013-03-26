@@ -102,7 +102,7 @@ class CenaManager
 
     /**
      * @param EntityInterface $entity
-     * @return \WScore\DataMapper\Role\RoleInterface
+     * @return \WScore\Cena\Role\CenaIO
      */
     public function DataIO( $entity )
     {
