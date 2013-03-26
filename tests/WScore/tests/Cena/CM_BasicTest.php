@@ -1,6 +1,7 @@
 <?php
 namespace WScore\tests\Cena;
 
+use WScore\DataMapper\Entity\EntityInterface;
 use WScore\DataMapper\Entity\EntityAbstract;
 
 require( __DIR__ . '/../../../autoloader.php' );
@@ -117,5 +118,44 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
         $cenaID = $entity->getCenaId();
         $expect = implode( '.', array( $entity->getModelName(true),  EntityAbstract::_ID_TYPE_VIRTUAL, 10 ) );
         $this->assertEquals( $expect, $cenaID );
+    }
+
+    function test_getCenaEntity_without_Cena()
+    {
+        $cena = 'Friends.0.5';
+        $this->cm->useEntity( $this->friendEntity );
+        $entity = $this->cm->getCenaEntity( $cena );
+        $this->assertEquals( $cena, $entity->getCenaId() );
+    }
+
+    function test_getCenaEntity_with_Cena()
+    {
+        $cena = 'Cena.Friends.0.6';
+        $this->cm->useEntity( $this->friendEntity );
+        $entity = $this->cm->getCenaEntity( $cena );
+        $this->assertEquals( $cena, 'Cena.' . $entity->getCenaId() );
+    }
+
+    function test_getCenaEntity_array()
+    {
+        $cena = array( 'Friends.0.7', 'Friends.0.8' );
+        $this->cm->useEntity( $this->friendEntity );
+        $entity = $this->cm->getCenaEntity( $cena );
+        $this->assertTrue( is_array( $entity ) );
+        $this->assertEquals( $cena[0], $entity[0]->getCenaId() );
+        $this->assertEquals( $cena[1], $entity[1]->getCenaId() );
+    }
+
+    function test_from_system_entity()
+    {
+        $data   = $this->getFriendData(1);
+        $friend = $this->em->newEntity( $this->friendEntity, $data );
+        $this->em->saveEntity( $friend );
+
+        $this->cm->useEntity( $this->friendEntity );
+        $entity = $this->cm->getEntity( 'Friends', EntityInterface::_ID_TYPE_SYSTEM, 1 );
+        foreach( $data as $key => $val ) {
+            $this->assertEquals( $val, $entity->$key );
+        }
     }
 }
