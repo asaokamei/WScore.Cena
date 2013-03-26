@@ -38,6 +38,19 @@ class CenaIO extends DataIO
     }
 
     /**
+     * @param array  $data
+     * @param string $method
+     * @return $this
+     */
+    public function load( $data=array(), $method='set' )
+    {
+        if( empty( $data ) ) $data = $_POST;
+        $this->loadParent( $data );
+        $this->loadLink( $data, $method );
+        return $this;
+    }
+    
+    /**
      * @param array       $data
      * @return self
      */

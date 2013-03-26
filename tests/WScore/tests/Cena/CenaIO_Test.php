@@ -21,6 +21,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
     static function setUpBeforeClass()
     {
         /** @var $container \WScore\DiContainer\Container */
+        /** @noinspection PhpIncludeInspection */
         $container = include( VENDOR_DIRECTORY . 'wscore/dicontainer/scripts/instance.php' );
         $container->set( '\Pdo', self::$config );
         /** @var $friend \WScore\tests\contacts\models\Friends */
@@ -37,6 +38,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
     function setUp()
     {
         /** @var $container \WScore\DiContainer\Container */
+        /** @noinspection PhpIncludeInspection */
         $container = include( VENDOR_DIRECTORY . 'wscore/dicontainer/scripts/instance.php' );
         $container->set( 'ContainerInterface', $container );
         $container->set( '\Pdo', self::$config );
@@ -133,8 +135,46 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $this->cm->useEntity( $this->contactEntity );
         $cena->loadLink( $input );
 
-        /** @var $contact \WScore\DataMapper\Entity\EntityAbstract */
-        $contact = $cena->entity->contacts[0];
+        /** @var $contact \WScore\tests\contacts\entities\contact */
+        /** @var $entity  \WScore\tests\contacts\entities\friend */
+        $entity  = $cena->entity;
+        $contact = $entity->contacts[0];
         $this->assertEquals( $contactID, 'Cena.' . $contact->getCenaId() );
+    }
+    
+    function test_load()
+    {
+        $data   = $this->getFriendData(1);
+        $friend = $this->em->newEntity( $this->friendEntity );
+        $cenaID = $friend->getCenaId();
+        $cena   = $this->cm->DataIO( $friend );
+
+        list( $model, $type, $id ) = explode( '.', $cenaID );
+        $contactID = 'Cena.Contacts.0.5';
+        $input  = array(
+            'Cena' => array(
+                $model => array(
+                    $type => array(
+                        $id => array(
+                            'prop' => $data,
+                            'link' => array( 'contacts' => $contactID )
+                        )
+                    )
+                )
+            )
+        );
+        $this->cm->useEntity( $this->friendEntity );
+        $this->cm->useEntity( $this->contactEntity );
+        $cena->load( $input );
+
+        /** @var $contact \WScore\tests\contacts\entities\contact */
+        /** @var $entity  \WScore\tests\contacts\entities\friend */
+        $entity  = $cena->entity;
+        $contact = $entity->contacts[0];
+        $this->assertEquals( $contactID, 'Cena.' . $contact->getCenaId() );
+        foreach( $data as $key => $val ) {
+            $this->assertEquals( $val, $cena->entity->$key );
+        }
+
     }
 }
