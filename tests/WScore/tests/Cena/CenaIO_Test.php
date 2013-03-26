@@ -83,4 +83,28 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $this->assertContains( "value=\"{$name}\"", $html );
         $this->assertContains( "name=\"{$cenaID}\"", $html );
     }
+
+    function test_loadParent()
+    {
+        $friend = $this->em->newEntity( $this->friendEntity );
+        $cenaID = $friend->getCenaId();
+        $cena   = $this->cm->DataIO( $friend );
+        $data   = $this->getFriendData(1);
+        list( $model, $type, $id ) = explode( '.', $cenaID );
+        $input  = array(
+            'Cena' => array(
+                $model => array(
+                    $type => array(
+                        $id => array(
+                            'prop' => $data
+                        )
+                    )
+                )
+            )
+        );
+        $cena->load( $input );
+        foreach( $data as $key => $val ) {
+            $this->assertEquals( $val, $cena->entity->$key );
+        }
+    }
 }
