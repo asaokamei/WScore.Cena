@@ -102,7 +102,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
                 )
             )
         );
-        $cena->load( $input );
+        $cena->loadParent( $input );
         foreach( $data as $key => $val ) {
             $this->assertEquals( $val, $cena->entity->$key );
         }
