@@ -79,8 +79,8 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         // check html form.
         $html   = (string) $form;
         $cenaID = $friend->getCenaId();
-        $cenaID = 'Cena[' . implode( '][', explode( '.', $cenaID ) ) . ']';
+        $cenaID = $this->cm->getFormName( $cenaID, 'prop', 'friend_name' );
         $this->assertContains( "value=\"{$name}\"", $html );
-        $this->assertContains( "name=\"{$cenaID}[prop][friend_name]\"", $html );
+        $this->assertContains( "name=\"{$cenaID}\"", $html );
     }
 }
