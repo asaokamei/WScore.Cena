@@ -23,10 +23,18 @@ class CenaManager
      */
     protected $role;
 
+    /**
+     * @param EntityInterface $entity
+     */
+    public function useEntity( $entity )
+    {
+        $short = $entity::getStaticModelName( true );
+        $this->models[ $short ] = $entity;
+    }
 
     /**
      * @param string $cenaId
-     * @return \WScore\DataMapper\EntityManager[]
+     * @return EntityInterface|EntityInterface[]
      */
     public function getCenaEntity( $cenaId )
     {
@@ -55,7 +63,8 @@ class CenaManager
         if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
             return $this->em->newEntity( $model, array(), $id );
         }
-        return $this->em->fetch( $model, $id );
+        $collection = $this->em->fetch( $model, $id );
+        return $collection[0];
     }
 
     // +----------------------------------------------------------------------+
