@@ -120,7 +120,6 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $cenaID = $friend->getCenaId();
         $cena   = $this->cm->DataIO( $friend );
 
-        list( $model, $type, $id ) = explode( '.', $cenaID );
         $contactID = 'Cena.Contacts.0.5';
         $input  = $this->buildCenaData( $cenaID, array( 'link' => array( 'contacts' => $contactID ) ) );
         $this->cm->useEntity( $this->friendEntity );
@@ -141,7 +140,6 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $cenaID = $friend->getCenaId();
         $cena   = $this->cm->DataIO( $friend );
 
-        list( $model, $type, $id ) = explode( '.', $cenaID );
         $contactID = 'Cena.Contacts.0.5';
         $input  = $this->buildCenaData( $cenaID, array(
             'prop' => $data,
@@ -159,6 +157,5 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         foreach( $data as $key => $val ) {
             $this->assertEquals( $val, $cena->entity->$key );
         }
-
     }
 }
