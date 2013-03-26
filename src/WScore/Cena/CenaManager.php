@@ -53,7 +53,7 @@ class CenaManager
     {
         if( isset( $this->models[ $model ] ) ) $model = $this->models[ $model ];
         if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
-            return $this->em->newEntity( $model, $id );
+            return $this->em->newEntity( $model, array(), $id );
         }
         return $this->em->fetch( $model, $id );
     }

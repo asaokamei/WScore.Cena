@@ -1,6 +1,8 @@
 <?php
 namespace WScore\tests\Cena;
 
+use WScore\DataMapper\Entity\EntityAbstract;
+
 require( __DIR__ . '/../../../autoloader.php' );
 
 class CM_BasicTest extends \PHPUnit_Framework_TestCase
@@ -107,5 +109,13 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
         );
         $found = $this->cm->getDataForCenaId( $data, $cenaID );
         $this->assertEquals( $info, $found );
+    }
+
+    function test_getEntity_returns_new_entity()
+    {
+        $entity = $this->cm->getEntity( $this->friendEntity, EntityAbstract::_ID_TYPE_VIRTUAL, 10 );
+        $cenaID = $entity->getCenaId();
+        $expect = implode( '.', array( $entity->getModelName(true),  EntityAbstract::_ID_TYPE_VIRTUAL, 10 ) );
+        $this->assertEquals( $expect, $cenaID );
     }
 }
