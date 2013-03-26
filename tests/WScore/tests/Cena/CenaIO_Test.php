@@ -15,6 +15,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
     public $cm;
 
     public $friendEntity = '\WScore\tests\contacts\entities\friend';
+    public $contactEntity = '\WScore\tests\contacts\entities\contact';
 
     // +----------------------------------------------------------------------+
     static function setUpBeforeClass()
@@ -106,5 +107,34 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         foreach( $data as $key => $val ) {
             $this->assertEquals( $val, $cena->entity->$key );
         }
+    }
+
+    function test_loadLink()
+    {
+        $data   = $this->getFriendData(1);
+        $friend = $this->em->newEntity( $this->friendEntity, $data );
+        $cenaID = $friend->getCenaId();
+        $cena   = $this->cm->DataIO( $friend );
+
+        list( $model, $type, $id ) = explode( '.', $cenaID );
+        $contactID = 'Cena.Contacts.0.5';
+        $input  = array(
+            'Cena' => array(
+                $model => array(
+                    $type => array(
+                        $id => array(
+                            'link' => array( 'contacts' => $contactID )
+                        )
+                    )
+                )
+            )
+        );
+        $this->cm->useEntity( $this->friendEntity );
+        $this->cm->useEntity( $this->contactEntity );
+        $cena->loadLink( $input );
+
+        /** @var $contact \WScore\DataMapper\Entity\EntityAbstract */
+        $contact = $cena->entity->contacts[0];
+        $this->assertEquals( $contactID, 'Cena.' . $contact->getCenaId() );
     }
 }
