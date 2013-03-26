@@ -56,7 +56,6 @@ class CenaIO extends DataIO
      */
     public function loadLink( $data=array(), $method='set' )
     {
-        if( is_array(  $method ) ) $data = $method;
         if( empty( $data ) ) $data = $_POST;
         $data = $this->cena->getDataForCenaId( $data, $this->entity->getCenaId() );
         if( empty( $data[ 'link' ] ) ) return $this;
