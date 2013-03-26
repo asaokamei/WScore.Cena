@@ -1,5 +1,5 @@
 <?php
-namespace WSTests\DataMapper\entities;
+namespace WScore\tests\contacts\entities;
 
 use \WScore\DataMapper\Entity\EntityAbstract;
 

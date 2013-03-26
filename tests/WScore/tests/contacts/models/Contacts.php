@@ -1,5 +1,5 @@
 <?php
-namespace WSTests\DataMapper\models;
+namespace WScore\tests\contacts\models;
 
 use \WScore\DataMapper\Model;
 
