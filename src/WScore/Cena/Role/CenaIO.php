@@ -45,7 +45,7 @@ class CenaIO extends DataIO
     public function load( $data=array(), $method='set' )
     {
         if( empty( $data ) ) $data = $_POST;
-        $this->loadParent( $data );
+        $this->loadData( $data );
         $this->loadLink( $data, $method );
         return $this;
     }
@@ -54,7 +54,7 @@ class CenaIO extends DataIO
      * @param array       $data
      * @return self
      */
-    public function loadParent( $data=array() )
+    public function loadData( $data=array() )
     {
         if( empty( $data ) ) $data = $_POST;
         $data = $this->cena->getDataForCenaId( $data, $this->entity->getCenaId() );
