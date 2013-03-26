@@ -158,4 +158,24 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
             $this->assertEquals( $val, $cena->entity->$key );
         }
     }
+    
+    function test_popHiddenLink()
+    {
+        $friend  = $this->em->newEntity( $this->friendEntity );
+        $contact = $this->em->newEntity( $this->contactEntity );
+        $contact2= $this->em->newEntity( $this->contactEntity );
+        $this->em->relation( $friend, 'contacts' )->set( $contact );
+        $this->em->relation( $friend, 'contacts' )->set( $contact2 );
+        $cenaIO = $this->cm->DataIO( $friend );
+
+        $form  = $cenaIO->popLinkHidden( 'contacts' );
+        $this->assertEquals( 'WScore\Html\Elements', get_class( $form ) );
+        $html  = (string) $form;
+        $name  = $this->cm->getFormName( $friend->getCenaId(), 'link', 'contacts' );
+        $value = $contact->getCenaId();
+        $this->assertContains( "name=\"{$name}[]\"", $html );
+        $this->assertContains( "value=\"Cena.{$value}\"", $html );
+        $value = $contact2->getCenaId();
+        $this->assertContains( "value=\"Cena.{$value}\"", $html );
+    }
 }

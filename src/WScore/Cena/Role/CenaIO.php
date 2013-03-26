@@ -14,9 +14,9 @@ class CenaIO extends DataIO
 
     /**
      * @Inject
-     * @var \WScore\Html\Elements
+     * @var \WScore\Html\Forms
      */
-    public $elements;
+    public $forms;
 
     /**
      * pops value of the $name (property name).
@@ -114,15 +114,15 @@ class CenaIO extends DataIO
     {
         /** @var $targets \WScore\DataMapper\Entity\Collection */
         /** @var $hideDivs \WScore\Html\Elements */
-        $targets  = $this->em->relation( $this->entity, $name );
-        $hideDivs = $this->elements->div();
+        $targets  = $this->entity->$name;
+        $hideDivs = $this->forms->elements->div();
         if( empty( $targets ) ) return $hideDivs;
         
         foreach( $targets as $target ) {
             
             /** @var $target \WScore\DataMapper\Entity\EntityInterface */
             $cenaId = $this->cena->cena . $this->cena->connector . $target->getCenaId();
-            $tag = $this->elements->input()->type( 'hidden' )->name( $name )->value( $cenaId )->_setMultipleName();
+            $tag = $this->forms->input( 'hidden', $name, $cenaId )->_setMultipleName();
             $this->populateFormName( $tag, 'link' );
             $hideDivs->_contain( $tag );
         }
