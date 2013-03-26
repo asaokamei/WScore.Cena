@@ -58,6 +58,19 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         return $model->getFriendData( $idx );
     }
 
+    function buildCenaData( $cenaID, $data ) {
+        list( $model, $type, $id ) = explode( '.', $cenaID );
+        $input  = array(
+            'Cena' => array(
+                $model => array(
+                    $type => array(
+                        $id => $data
+                    )
+                )
+            )
+        );
+        return $input;
+    }
     // +----------------------------------------------------------------------+
     function test_basic_classes()
     {
@@ -93,18 +106,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $cenaID = $friend->getCenaId();
         $cena   = $this->cm->DataIO( $friend );
         $data   = $this->getFriendData(1);
-        list( $model, $type, $id ) = explode( '.', $cenaID );
-        $input  = array(
-            'Cena' => array(
-                $model => array(
-                    $type => array(
-                        $id => array(
-                            'prop' => $data
-                        )
-                    )
-                )
-            )
-        );
+        $input  = $this->buildCenaData( $cenaID, array( 'prop' => $data ) );
         $cena->loadData( $input );
         foreach( $data as $key => $val ) {
             $this->assertEquals( $val, $cena->entity->$key );
@@ -120,17 +122,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
 
         list( $model, $type, $id ) = explode( '.', $cenaID );
         $contactID = 'Cena.Contacts.0.5';
-        $input  = array(
-            'Cena' => array(
-                $model => array(
-                    $type => array(
-                        $id => array(
-                            'link' => array( 'contacts' => $contactID )
-                        )
-                    )
-                )
-            )
-        );
+        $input  = $this->buildCenaData( $cenaID, array( 'link' => array( 'contacts' => $contactID ) ) );
         $this->cm->useEntity( $this->friendEntity );
         $this->cm->useEntity( $this->contactEntity );
         $cena->loadLink( $input );
@@ -151,17 +143,9 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
 
         list( $model, $type, $id ) = explode( '.', $cenaID );
         $contactID = 'Cena.Contacts.0.5';
-        $input  = array(
-            'Cena' => array(
-                $model => array(
-                    $type => array(
-                        $id => array(
-                            'prop' => $data,
-                            'link' => array( 'contacts' => $contactID )
-                        )
-                    )
-                )
-            )
+        $input  = $this->buildCenaData( $cenaID, array(
+            'prop' => $data,
+            'link' => array( 'contacts' => $contactID ) ) 
         );
         $this->cm->useEntity( $this->friendEntity );
         $this->cm->useEntity( $this->contactEntity );
