@@ -14,5 +14,5 @@ else {
 require_once( VENDOR_DIRECTORY . 'autoload.php' );
 $loader = new \Composer\Autoload\ClassLoader();
 $loader->add( 'WScore\Cena', dirname( __DIR__ ).'/src' );
-$loader->add( 'WTest', __DIR__ );
+$loader->add( 'WScore\tests', __DIR__ );
 $loader->register();
