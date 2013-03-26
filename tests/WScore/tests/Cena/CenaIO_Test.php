@@ -58,6 +58,13 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         return $model->getFriendData( $idx );
     }
 
+    function getContactData( $idx=1 )
+    {
+        /** @var $model \WSTests\DataMapper\models\Contacts */
+        $model = $this->em->getModel( $this->contactEntity );
+        return $model->makeContact( $idx );
+    }
+    
     function buildCenaData( $cenaID, $data ) {
         list( $model, $type, $id ) = explode( '.', $cenaID );
         $input  = array(
@@ -177,5 +184,66 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $this->assertContains( "value=\"Cena.{$value}\"", $html );
         $value = $contact2->getCenaId();
         $this->assertContains( "value=\"Cena.{$value}\"", $html );
+    }
+    
+    function test_popSelectLink()
+    {
+        $friend  = $this->em->newEntity( $this->friendEntity );
+        $contact = $this->em->newEntity( $this->contactEntity, $this->getContactData(1) );
+        $contact2= $this->em->newEntity( $this->contactEntity, $this->getContactData(2) );
+        $contact3= $this->em->newEntity( $this->contactEntity, $this->getContactData(3) );
+        $this->em->relation( $friend, 'contacts' )->set( $contact );
+        $this->em->relation( $friend, 'contacts' )->set( $contact2 );
+        $cenaIO = $this->cm->DataIO( $friend );
+
+        $contacts = array( $contact, $contact2, $contact3 );
+        $form  = $cenaIO->popLinkSelect( 'contacts', $contacts, 'info' );
+        /** @var $contact \WScore\tests\contacts\entities\contact */
+        /** @var $entity  \WScore\tests\contacts\entities\friend */
+        $this->assertEquals( 'WScore\Html\Elements', get_class( $form ) );
+
+        // check if returned an Elements object. 
+        $html  = (string) $form;
+        $name  = $this->cm->getFormName( $friend->getCenaId(), 'link', 'contacts' );
+        
+        // check if these name/values are included in the html. 
+        $this->assertContains( "name=\"{$name}[]\"", $html );
+        $value = $contact->getCenaId();
+        $this->assertContains( "value=\"Cena.{$value}\"", $html );
+        $value = $contact2->getCenaId();
+        $this->assertContains( "value=\"Cena.{$value}\"", $html );
+        $value = $contact3->getCenaId();
+        $this->assertContains( "value=\"Cena.{$value}\"", $html );
+        
+        // check for each line.
+        $lines = explode( "\n", $html );
+        $line  = $lines[0];
+        $this->assertContains( "<select ", $line );
+        $this->assertContains( " multiple=\"multiple\"", $line );
+        $this->assertContains( " name=\"{$name}[]\"", $line );
+
+        // check for second line: option for contact
+        $line  = $lines[1];
+        $this->assertContains( "<option ", $line );
+        $value = $contact->getCenaId();
+        $this->assertContains( " value=\"Cena.{$value}\"", $line );
+        $this->assertContains( " selected=\"selected\"", $line );
+        $this->assertContains( ">my contact#1<", $line );
+
+        // check for third line: option for contact2
+        $line  = $lines[2];
+        $this->assertContains( "<option ", $line );
+        $value = $contact2->getCenaId();
+        $this->assertContains( " value=\"Cena.{$value}\"", $line );
+        $this->assertContains( " selected=\"selected\"", $line );
+        $this->assertContains( ">my contact#2<", $line );
+
+        // check for 4th line: option for contact3
+        $line  = $lines[3];
+        $this->assertContains( "<option ", $line );
+        $value = $contact3->getCenaId();
+        $this->assertContains( " value=\"Cena.{$value}\"", $line );
+        $this->assertNotContains( " selected=\"selected\"", $line );
+        $this->assertContains( ">my contact#3<", $line );
     }
 }

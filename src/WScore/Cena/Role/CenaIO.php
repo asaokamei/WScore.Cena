@@ -1,6 +1,7 @@
 <?php
 namespace WScore\Cena\Role;
 
+use \WScore\DataMapper\Entity\EntityInterface;
 use WScore\DataMapper\Role\DataIO;
 use WScore\Html\Elements;
 
@@ -129,5 +130,32 @@ class CenaIO extends DataIO
         return $hideDivs;
     }
 
+    /**
+     * creates a select box for a relation (many-to-many).
+     *
+     * @param string                               $name
+     * @param \WScore\DataMapper\Entity\Collection $lists
+     * @param string                               $display
+     * @return \WScore\Html\Elements
+     */
+    public function popLinkSelect( $name, $lists, $display )
+    {
+        $links = array();
+        foreach( $lists as $entity ) {
+            /** @var $entity EntityInterface */
+            $cenaId = $this->cena->cena . $this->cena->connector . $entity->getCenaId();
+            $links[] = array( $cenaId, $entity[ $display ] );
+        }
+        $targets = $this->entity->$name;
+        $selected = array();
+        if( !empty( $targets ) )
+            foreach( $targets as $tgt ) {
+                /** @var $tgt EntityInterface */
+                $selected[] = $this->cena->cena . $this->cena->connector . $tgt->getCenaId();
+            }
+        $select = $this->forms->select( $name, $links, $selected, array( 'multiple'=>true ) );
+        $this->populateFormName( $select, 'link' );
+        return $select;
+    }
 
 }
