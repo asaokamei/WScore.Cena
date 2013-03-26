@@ -3,6 +3,12 @@ namespace WScore\Cena;
 
 use WScore\DataMapper\Entity\EntityInterface;
 
+/**
+ * Class CenaManager
+ * @package WScore\Cena
+ *
+ * @singleton
+ */
 class CenaManager
 {
     public $cena = 'Cena';
