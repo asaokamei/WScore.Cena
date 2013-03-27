@@ -86,7 +86,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $info = 'this is info';
         $data = array(
-            $this->cm->cena => $info
+            $this->cm->construct->cena => $info
         );
         $found = $this->cm->getDataForCenaId( $data );
         $this->assertEquals( $info, $found );
@@ -100,7 +100,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
         list( $model, $type, $id ) = explode( '.', $cenaID );
         $info = 'this is info';
         $data = array(
-            $this->cm->cena => array(
+            $this->cm->construct->cena => array(
                 $model => array(
                     $type => array(
                         $id => $info

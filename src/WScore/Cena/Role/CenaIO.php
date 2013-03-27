@@ -122,7 +122,7 @@ class CenaIO extends DataIO
         foreach( $targets as $target ) {
             
             /** @var $target \WScore\DataMapper\Entity\EntityInterface */
-            $cenaId = $this->cena->cena . $this->cena->connector . $target->getCenaId();
+            $cenaId = $this->cena->construct->cena . $this->cena->construct->connector . $target->getCenaId();
             $tag = $this->forms->input( 'hidden', $name, $cenaId )->_setMultipleName();
             $this->populateFormName( $tag, 'link' );
             $hideDivs->_contain( $tag );
@@ -144,7 +144,7 @@ class CenaIO extends DataIO
         $links = array();
         foreach( $lists as $entity ) {
             /** @var $entity EntityInterface */
-            $cenaId = $this->cena->cena . $this->cena->connector . $entity->getCenaId();
+            $cenaId = $this->cena->construct->cena . $this->cena->construct->connector . $entity->getCenaId();
             $links[] = array( $cenaId, $entity[ $display ] );
         }
         $targets = $this->entity->$name;
@@ -152,7 +152,7 @@ class CenaIO extends DataIO
         if( !empty( $targets ) )
             foreach( $targets as $tgt ) {
                 /** @var $tgt EntityInterface */
-                $selected[] = $this->cena->cena . $this->cena->connector . $tgt->getCenaId();
+                $selected[] = $this->cena->construct->cena . $this->cena->construct->connector . $tgt->getCenaId();
             }
         $select = $this->forms->$select( $name, $links, $selected, array( 'multiple'=>true ) );
         $this->populateFormName( $select, 'link' );

@@ -11,12 +11,14 @@ use WScore\DataMapper\Entity\EntityInterface;
  */
 class CenaManager
 {
-    public $cena = 'Cena';
-
-    public $connector = '.';
-
     public $models = array();
-    
+
+    /**
+     * @Inject
+     * @var \WScore\Cena\Construct
+     */
+    public $construct;
+
     /** 
      * @Inject
      * @var \WScore\DataMapper\EntityManager 
@@ -51,8 +53,7 @@ class CenaManager
             }
             return $entities;
         }
-        $list = explode( $this->connector, $cenaId );
-        if( $list[0] == $this->cena ) array_shift( $list );
+        $list = $this->construct->decompose( $cenaId );
         if( count( $list ) < 3 ) return null;
         return $this->getEntity( $list[0], $list[1], $list[2] );
     }
@@ -84,12 +85,8 @@ class CenaManager
      * @param null    $name
      * @return string
      */
-    public function getFormName( $cenaId, $type='prop', $name=null )
-    {
-        $cena = explode( $this->connector, $cenaId );
-        $formName = $this->cena . '[' . implode( '][', $cena ) . "][{$type}]";
-        if( $name ) $formName .= "[{$name}]";
-        return $formName;
+    public function getFormName( $cenaId, $type='prop', $name=null ) {
+        return $this->construct->composeFormName( $cenaId, $type, $name );
     }
 
     /**
@@ -97,22 +94,8 @@ class CenaManager
      * @param string $cenaId
      * @return array
      */
-    public function getDataForCenaId( $data, $cenaId=null )
-    {
-        // the data is not in Cena format. 
-        // return the data as is. 
-        if( !isset( $data[ $this->cena ] ) ) return $data;
-        // OK, got Cena formatted data. 
-        $data = $data[ $this->cena ];
-        if( !$cenaId ) return $data;
-
-        // get data for a specific cenaID. 
-        $cena = explode( '.', $cenaId );
-        foreach( $cena as $item ) {
-            if( !isset( $data[ $item ] ) ) return array();
-            $data = $data[ $item ];
-        }
-        return $data;
+    public function getDataForCenaId( $data, $cenaId=null ) {
+        return $this->construct->extractData( $data, $cenaId );
     }
 
     /**
