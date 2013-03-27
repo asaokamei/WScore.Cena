@@ -15,16 +15,16 @@ class CenaIO extends DataIO
 
     /**
      * @Inject
-     * @var \WScore\Html\Forms
+     * @var \WScore\Cena\Html
      */
-    public $forms;
+    public $html;
 
     /**
      * pops value of the $name (property name).
      * returns html-safe value if html_type is 'html',
      * returns html form element if html_type is 'form'.
      *
-     * Cenatar returns form with cena-formatted name such as
+     * CenaIO returns form with cena-formatted name such as
      *    name="Cena[model][get][id]"
      *
      * @param string $name
@@ -88,21 +88,7 @@ class CenaIO extends DataIO
     protected function populateFormName( $html, $type='prop' )
     {
         if( ! $html instanceof Elements ) return;
-        $cenaId = $this->entity->getCenaId();
-        $format = $this->cena->getFormName( $cenaId, $type );
-        $makeCena = function( $form ) use( $format ) {
-            /** @var $tags Elements */
-            if( isset( $form->_attributes[ 'name' ] ) ) {
-                $name = $form->_attributes[ 'name' ];
-                $post = '';
-                if( substr( $name, -2 ) == '[]' ) {
-                    $name = substr( $name, 0, -2 );
-                    $post = '[]';
-                }
-                $form->_attributes[ 'name' ] = $format . '[' . $name . ']' . $post;
-            }
-        };
-        $html->_walk( $makeCena, 'name' );
+        $this->html->populateFormName( $html, $this->entity, $type );
     }
 
     /**
@@ -113,21 +99,8 @@ class CenaIO extends DataIO
      */
     public function popLinkHidden( $name )
     {
-        /** @var $targets \WScore\DataMapper\Entity\Collection */
-        /** @var $hideDivs \WScore\Html\Elements */
         $targets  = $this->entity->$name;
-        $hideDivs = $this->forms->elements->div();
-        if( empty( $targets ) ) return $hideDivs;
-        
-        foreach( $targets as $target ) {
-            
-            /** @var $target \WScore\DataMapper\Entity\EntityInterface */
-            $cenaId = $this->cena->construct->cena . $this->cena->construct->connector . $target->getCenaId();
-            $tag = $this->forms->input( 'hidden', $name, $cenaId )->_setMultipleName();
-            $this->populateFormName( $tag, 'link' );
-            $hideDivs->_contain( $tag );
-        }
-        return $hideDivs;
+        return $this->html->composeHiddenLinks( $name, $this->entity, $targets );
     }
 
     /**
@@ -141,22 +114,8 @@ class CenaIO extends DataIO
      */
     public function popLinkSelect( $name, $lists, $display, $select='select' )
     {
-        $links = array();
-        foreach( $lists as $entity ) {
-            /** @var $entity EntityInterface */
-            $cenaId = $this->cena->construct->cena . $this->cena->construct->connector . $entity->getCenaId();
-            $links[] = array( $cenaId, $entity[ $display ] );
-        }
         $targets = $this->entity->$name;
-        $selected = array();
-        if( !empty( $targets ) )
-            foreach( $targets as $tgt ) {
-                /** @var $tgt EntityInterface */
-                $selected[] = $this->cena->construct->cena . $this->cena->construct->connector . $tgt->getCenaId();
-            }
-        $select = $this->forms->$select( $name, $links, $selected, array( 'multiple'=>true ) );
-        $this->populateFormName( $select, 'link' );
-        return $select;
+        return $this->html->composeLinks( $this->entity, $name, $targets, $lists, $display, $select );
     }
 
 }
