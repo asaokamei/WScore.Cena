@@ -25,6 +25,14 @@ class Construct
         }
         return $cenaId;
     }
+    
+    public function unCompose( $cenaId )
+    {
+        if( substr( $cenaId, strlen( $this->cena )+1 ) === $this->cena . $this->connector ) {
+            $cenaId = substr( $cenaId, strlen( $this->cena )+1 );
+        }
+        return $cenaId;
+    }
     /**
      * de-compose cenaID into model, type, and id.
      * example: decompose( 'Cena.model.type.id' ) will return [ 'model', 'type', 'id' ].

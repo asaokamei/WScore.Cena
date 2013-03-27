@@ -158,4 +158,14 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals( $val, $entity->$key );
         }
     }
+    
+    function test_getByCenaId()
+    {
+        $data   = $this->getFriendData(1);
+        $friend = $this->em->newEntity( $this->friendEntity, $data );
+        
+        $cenaId = $friend->getCenaId();
+        $entity = $this->cm->getCenaEntity( $cenaId );
+        $this->assertSame( $friend, $entity );
+    }
 }
