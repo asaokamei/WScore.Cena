@@ -84,7 +84,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'WScore\Cena\CenaManager', get_class( $this->cm ) );
         $data   = $this->getFriendData(1);
         $friend = $this->em->newEntity( $this->friendEntity, $data );
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
         $this->assertEquals( 'WScore\Cena\Role\CenaIO', get_class( $cena ) );
     }
 
@@ -92,7 +92,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
     {
         $data   = $this->getFriendData(1);
         $friend = $this->em->newEntity( $this->friendEntity, $data );
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
         // check if name is returned correctly.
         $name   = $cena->popHtml( 'friend_name' );
         $this->assertEquals( $data[ 'friend_name' ], $name );
@@ -111,7 +111,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
     {
         $friend = $this->em->newEntity( $this->friendEntity );
         $cenaID = $friend->getCenaId();
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
         $data   = $this->getFriendData(1);
         $input  = $this->buildCenaData( $cenaID, array( 'prop' => $data ) );
         $cena->loadData( $input );
@@ -125,7 +125,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $data   = $this->getFriendData(1);
         $friend = $this->em->newEntity( $this->friendEntity, $data );
         $cenaID = $friend->getCenaId();
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
 
         $contactID = 'Cena.Contacts.0.5';
         $input  = $this->buildCenaData( $cenaID, array( 'link' => array( 'contacts' => $contactID ) ) );
@@ -145,7 +145,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $data   = $this->getFriendData(1);
         $friend = $this->em->newEntity( $this->friendEntity );
         $cenaID = $friend->getCenaId();
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
 
         $contactID = 'Cena.Contacts.0.5';
         $input  = $this->buildCenaData( $cenaID, array(
@@ -173,7 +173,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $contact2= $this->em->newEntity( $this->contactEntity );
         $this->em->relation( $friend, 'contacts' )->set( $contact );
         $this->em->relation( $friend, 'contacts' )->set( $contact2 );
-        $cenaIO = $this->cm->DataIO( $friend );
+        $cenaIO = $this->cm->applyCenaIO( $friend );
 
         $form  = $cenaIO->popLinkHidden( 'contacts' );
         $this->assertEquals( 'WScore\Html\Elements', get_class( $form ) );
@@ -194,7 +194,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $contact3= $this->em->newEntity( $this->contactEntity, $this->getContactData(3) );
         $this->em->relation( $friend, 'contacts' )->set( $contact );
         $this->em->relation( $friend, 'contacts' )->set( $contact2 );
-        $cenaIO = $this->cm->DataIO( $friend );
+        $cenaIO = $this->cm->applyCenaIO( $friend );
 
         $contacts = array( $contact, $contact2, $contact3 );
         $form  = $cenaIO->popLinkSelect( 'contacts', $contacts, 'info' );
@@ -255,7 +255,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $contact3= $this->em->newEntity( $this->contactEntity, $this->getContactData(3) );
         $this->em->relation( $friend, 'contacts' )->set( $contact );
         $this->em->relation( $friend, 'contacts' )->set( $contact2 );
-        $cenaIO = $this->cm->DataIO( $friend );
+        $cenaIO = $this->cm->applyCenaIO( $friend );
 
         $contacts = array( $contact, $contact2, $contact3 );
         $form  = $cenaIO->popLinkSelect( 'contacts', $contacts, 'info', 'checkList' );

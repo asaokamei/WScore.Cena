@@ -102,7 +102,7 @@ class CenaManager
      * @param EntityInterface $entity
      * @return \WScore\Cena\Role\CenaIO
      */
-    public function DataIO( $entity )
+    public function applyCenaIO( $entity )
     {
         return $this->role->applyRole( $entity, '\WScore\Cena\Role\CenaIO' );
     }

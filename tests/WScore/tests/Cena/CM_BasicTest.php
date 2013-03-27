@@ -68,7 +68,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $data   = $this->getFriendData(1);
         $friend = $this->em->newEntity( $this->friendEntity, $data );
-        $cena   = $this->cm->DataIO( $friend );
+        $cena   = $this->cm->applyCenaIO( $friend );
         $this->assertEquals( 'WScore\Cena\Role\CenaIO', get_class( $cena ) );
     }
 
