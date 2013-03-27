@@ -138,7 +138,7 @@ class CenaIO extends DataIO
      * @param string                               $display
      * @return \WScore\Html\Elements
      */
-    public function popLinkSelect( $name, $lists, $display )
+    public function popLinkSelect( $name, $lists, $display, $select='select' )
     {
         $links = array();
         foreach( $lists as $entity ) {
@@ -153,7 +153,7 @@ class CenaIO extends DataIO
                 /** @var $tgt EntityInterface */
                 $selected[] = $this->cena->cena . $this->cena->connector . $tgt->getCenaId();
             }
-        $select = $this->forms->select( $name, $links, $selected, array( 'multiple'=>true ) );
+        $select = $this->forms->$select( $name, $links, $selected, array( 'multiple'=>true ) );
         $this->populateFormName( $select, 'link' );
         return $select;
     }
