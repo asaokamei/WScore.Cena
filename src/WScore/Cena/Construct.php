@@ -12,6 +12,20 @@ class Construct
     public $connector = '.';
 
     /**
+     * composes CenaID for external transfer, i.e. for html form and json.
+     * just add 'Cena.' at the front. means 'model.type.id' -> 'Cena.model.type.id'.
+     *
+     * @param string $cenaId
+     * @return string
+     */
+    public function compose( $cenaId )
+    {
+        if( substr( $cenaId, strlen( $this->cena )+1 ) !== $this->cena . $this->connector ) {
+            $cenaId = $this->cena . $this->connector . $cenaId;
+        }
+        return $cenaId;
+    }
+    /**
      * de-compose cenaID into model, type, and id.
      * example: decompose( 'Cena.model.type.id' ) will return [ 'model', 'type', 'id' ].
      *
@@ -66,5 +80,4 @@ class Construct
         }
         return $data;
     }
-
 }
