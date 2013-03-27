@@ -136,6 +136,7 @@ class CenaIO extends DataIO
      * @param string                               $name
      * @param \WScore\DataMapper\Entity\Collection $lists
      * @param string                               $display
+     * @param string                               $select
      * @return \WScore\Html\Elements
      */
     public function popLinkSelect( $name, $lists, $display, $select='select' )
