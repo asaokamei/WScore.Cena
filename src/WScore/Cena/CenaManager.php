@@ -2,6 +2,7 @@
 namespace WScore\Cena;
 
 use WScore\DataMapper\Entity\EntityInterface;
+use WScore\DataMapper\Role\RoleInterface;
 
 /**
  * Class CenaManager
@@ -119,7 +120,7 @@ class CenaManager
     }
 
     /**
-     * @param EntityInterface $entity
+     * @param EntityInterface|RoleInterface $entity
      * @return \WScore\Cena\Role\CenaIO
      */
     public function applyCenaIO( $entity )
