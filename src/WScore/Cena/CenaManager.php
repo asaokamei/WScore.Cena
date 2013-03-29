@@ -11,6 +11,10 @@ use WScore\DataMapper\Entity\EntityInterface;
  */
 class CenaManager
 {
+    public $cena;
+
+    public $connector;
+
     public $models = array();
 
     /**
@@ -32,7 +36,19 @@ class CenaManager
     protected $role;
 
     /**
-     * @param EntityInterface $entity
+     * @Inject
+     * @var \WScore\Cena\Processor
+     */
+    public $processor;
+
+    public function __construct()
+    {
+        $this->cena = $this->construct->cena;
+        $this->connector = $this->construct->connector;
+        $this->processor->setCenaManager( $this );
+    }
+    /**
+     * @param string|EntityInterface $entity
      */
     public function useEntity( $entity )
     {
