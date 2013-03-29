@@ -47,6 +47,10 @@ class Construct
         return $list;
     }
 
+    public function construct( $model, $type, $id ) {
+        return implode( $this->connector, array( $model, $type, $id ) );
+    }
+
     /**
      * returns cena-formatted name for form elements.
      *
