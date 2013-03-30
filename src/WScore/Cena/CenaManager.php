@@ -58,6 +58,17 @@ class CenaManager
     }
 
     /**
+     * @param $entity
+     * @return bool|int|string
+     */
+    public function getModelFromEntityClass( $entity ) {
+        foreach( $this->models as $model => $class ) {
+            if( $entity === $class ) return $model;
+        }
+        return false;
+    }
+
+    /**
      * @param string $cenaId
      * @return EntityInterface|EntityInterface[]
      */
