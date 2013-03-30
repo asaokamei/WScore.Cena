@@ -30,6 +30,11 @@ class Processor
         return $this;
     }
 
+    /**
+     * process cena post data from html form.
+     * 
+     * @return bool
+     */
     public function posts()
     {
         $source = $this->source[ $this->cm->cena ];
@@ -42,20 +47,24 @@ class Processor
                 }
             }
         }
-        $this->process( $data );
+        return $this->process( $data );
     }
 
     /**
      * @param array $data
+     * @return bool
      */
     public function process( $data )
     {
+        $isValid = true;
         foreach( $data as $cenaID => $info )
         {
             $entity = $this->cm->getCenaEntity( $cenaID );
             $role   = $this->cm->applyCenaIO( $entity );
             $role->load( $info );
+            $isValid &= $role->validate();
         }
+        return $isValid;
     }
 
     /**
