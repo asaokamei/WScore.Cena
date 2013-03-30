@@ -28,8 +28,9 @@ class Construct
     
     public function unCompose( $cenaId )
     {
-        if( substr( $cenaId, strlen( $this->cena )+1 ) === $this->cena . $this->connector ) {
-            $cenaId = substr( $cenaId, strlen( $this->cena )+1 );
+        $head = $this->cena . $this->connector;
+        if( substr( $cenaId, 0, strlen( $head ) ) === $head ) {
+            $cenaId = substr( $cenaId, strlen( $head ) );
         }
         return $cenaId;
     }
