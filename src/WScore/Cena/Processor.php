@@ -72,9 +72,9 @@ class Processor
         if( !$type ) $type = EntityAbstract::_ID_TYPE_VIRTUAL;
         $model = $this->cm->getModelFromEntityClass( $entity );
         $cena  = $this->cm->cena;
-        if( !isset( $this->source[ $cena ] ) ) return;
-        if( !isset( $this->source[ $cena ][ $model ] ) ) return;
-        if( !isset( $this->source[ $cena ][ $model ][ $type ] ) ) return;
+        if( !isset( $this->source[ $cena ] ) ) return $this;
+        if( !isset( $this->source[ $cena ][ $model ] ) ) return $this;
+        if( !isset( $this->source[ $cena ][ $model ][ $type ] ) ) return $this;
         foreach( $this->source[ $cena ][ $model ][ $type ] as $id => $data ) {
             if( !isset( $data[ 'prop' ][ $name ] ) || empty( $data[ 'prop' ][ $name ] ) ) {
                 unset( $this->source[ $cena ][ $model ][ $type ][ $id ] );
