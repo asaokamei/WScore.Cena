@@ -2,6 +2,7 @@
 namespace WScore\Cena;
 
 use \WScore\DataMapper\Entity\EntityInterface;
+use \WScore\DataMapper\Entity\Collection;
 use WScore\Html\Elements;
 
 /**
@@ -53,14 +54,17 @@ class Html
      *
      * @param string                               $name
      * @param EntityInterface                      $entity
-     * @param \WScore\DataMapper\Entity\Collection $targets
+     * @param Collection|EntityInterface           $targets
      * @return \WScore\Html\Elements
      */
     public function composeHiddenLinks( $name, $entity, $targets )
     {
         /** @var $hideDivs \WScore\Html\Elements */
         $hideDivs = $this->forms->elements->div();
-        if( empty( $targets ) ) return $hideDivs;
+        if( $targets instanceof EntityInterface ) {
+            $targets = array( $targets );
+        }
+        elseif( empty( $targets ) ) return $hideDivs;
 
         foreach( $targets as $target ) {
 
