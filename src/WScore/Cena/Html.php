@@ -78,6 +78,18 @@ class Html
     }
 
     /**
+     * @param string $name
+     * @param EntityInterface $entity
+     * @return \WScore\Html\Elements Elements
+     */
+    public function composeEmptyHiddenLink( $name, $entity )
+    {
+        $tag = $this->forms->input( 'hidden', $name, '' )->_setMultipleName();
+        $this->populateFormName( $tag, $entity, 'link' );
+        return $tag;
+    }
+
+    /**
      * creates a select box for a relation (many-to-many).
      *
      * @param EntityInterface                      $entity

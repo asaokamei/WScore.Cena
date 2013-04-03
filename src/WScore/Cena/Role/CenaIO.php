@@ -104,6 +104,14 @@ class CenaIO extends DataIO
     }
 
     /**
+     * @param $name
+     * @return Elements
+     */
+    public function popEmptyLink( $name ) {
+        return $this->html->composeEmptyHiddenLink( $name, $this->entity );
+    }
+
+    /**
      * creates a select box for a relation (many-to-many).
      *
      * @param string                               $name
