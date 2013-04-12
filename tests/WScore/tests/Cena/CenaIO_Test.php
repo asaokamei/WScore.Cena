@@ -127,7 +127,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $cenaID = $friend->getCenaId();
         $cena   = $this->cm->applyCenaIO( $friend );
 
-        $contactID = 'Cena.Contacts.0.5';
+        $contactID = 'Cena.contact.0.5';
         $input  = $this->buildCenaData( $cenaID, array( 'link' => array( 'contacts' => $contactID ) ) );
         $this->cm->useEntity( $this->friendEntity );
         $this->cm->useEntity( $this->contactEntity );
@@ -147,7 +147,7 @@ class CenaIO_Test extends \PHPUnit_Framework_TestCase
         $cenaID = $friend->getCenaId();
         $cena   = $this->cm->applyCenaIO( $friend );
 
-        $contactID = 'Cena.Contacts.0.5';
+        $contactID = 'Cena.contact.0.5';
         $input  = $this->buildCenaData( $cenaID, array(
             'prop' => $data,
             'link' => array( 'contacts' => $contactID ) ) 

@@ -116,13 +116,13 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $entity = $this->cm->getEntity( $this->friendEntity, EntityAbstract::_ID_TYPE_VIRTUAL, 10 );
         $cenaID = $entity->getCenaId();
-        $expect = implode( '.', array( $entity->getModelName(true),  EntityAbstract::_ID_TYPE_VIRTUAL, 10 ) );
+        $expect = implode( '.', array( $entity->getEntityName(true),  EntityAbstract::_ID_TYPE_VIRTUAL, 10 ) );
         $this->assertEquals( $expect, $cenaID );
     }
 
     function test_getCenaEntity_without_Cena()
     {
-        $cena = 'Friends.0.5';
+        $cena = 'friend.0.5';
         $this->cm->useEntity( $this->friendEntity );
         $entity = $this->cm->getCenaEntity( $cena );
         $this->assertEquals( $cena, $entity->getCenaId() );
@@ -130,7 +130,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
 
     function test_getCenaEntity_with_Cena()
     {
-        $cena = 'Cena.Friends.0.6';
+        $cena = 'Cena.friend.0.6';
         $this->cm->useEntity( $this->friendEntity );
         $entity = $this->cm->getCenaEntity( $cena );
         $this->assertEquals( $cena, 'Cena.' . $entity->getCenaId() );
@@ -138,7 +138,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
 
     function test_getCenaEntity_array()
     {
-        $cena = array( 'Friends.0.7', 'Friends.0.8' );
+        $cena = array( 'friend.0.7', 'friend.0.8' );
         $this->cm->useEntity( $this->friendEntity );
         $entity = $this->cm->getCenaEntity( $cena );
         $this->assertTrue( is_array( $entity ) );
@@ -153,7 +153,7 @@ class CM_BasicTest extends \PHPUnit_Framework_TestCase
         $this->em->saveEntity( $friend );
 
         $this->cm->useEntity( $this->friendEntity );
-        $entity = $this->cm->getEntity( 'Friends', EntityInterface::_ID_TYPE_SYSTEM, 1 );
+        $entity = $this->cm->getEntity( 'friend', EntityInterface::_ID_TYPE_SYSTEM, 1 );
         foreach( $data as $key => $val ) {
             $this->assertEquals( $val, $entity->$key );
         }
