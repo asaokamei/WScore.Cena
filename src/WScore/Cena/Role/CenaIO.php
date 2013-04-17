@@ -126,4 +126,18 @@ class CenaIO extends DataIO
         return $this->html->composeLinks( $this->entity, $name, $targets, $lists, $display, $select );
     }
 
+    /**
+     * @return Elements
+     */
+    public function popDeleteCheck()
+    {
+        $check = $this->html->composeDeleteCheck( $this->entity );
+        return $check;
+    }
+    
+    public function popDeleteSelect()
+    {
+        $select = $this->html->composeDeleteSelect( $this->entity );
+        return $select;
+    }
 }

@@ -43,7 +43,10 @@ class Html
                     $name = substr( $name, 0, -2 );
                     $post = '[]';
                 }
-                $form->_attributes[ 'name' ] = $format . '[' . $name . ']' . $post;
+                $form->_attributes[ 'name' ] = $format;
+                if( $name ) {
+                    $form->_attributes[ 'name' ] .= '[' . $name . ']' . $post;
+                }
             }
         };
         $html->_walk( $makeCena, 'name' );
@@ -117,6 +120,42 @@ class Html
         /** @var $select Elements */
         $select = $this->forms->$select( $name, $links, $selected, array( 'multiple'=>true ) );
         $this->populateFormName( $select, $entity, 'link' );
+        return $select;
+    }
+
+    /**
+     * @param EntityInterface   $entity
+     * @return Elements
+     */
+    public function composeDeleteCheck( $entity )
+    {
+        $tag = $this->forms->input( 'checkbox', '', '1' );
+        $this->populateFormName( $tag, $entity, 'del' );
+        if( $entity->toDelete() ) {
+            $tag->checked( true );
+        }
+        return $tag;
+    }
+
+    /**
+     * @param EntityInterface   $entity
+     * @return Elements
+     */
+    public function composeDeleteSelect( $entity )
+    {
+        $links  = array();
+        $selected = array();
+        if( $entity->isIdPermanent() ) {
+            $links[] = array( '0', 'edit' );
+            $links[] = array( '1', 'delete' );
+            if( $entity->toDelete() ) {
+                $selected[] = '1';
+            }
+        } else {
+            $links[] = array( '0', 'new' );
+        }
+        $select = $this->forms->select( '', $links, $selected );
+        $this->populateFormName( $select, $entity, 'del' );
         return $select;
     }
 }
