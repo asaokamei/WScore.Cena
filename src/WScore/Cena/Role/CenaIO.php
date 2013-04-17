@@ -46,6 +46,10 @@ class CenaIO extends DataIO
     public function load( $data=array(), $method='set' )
     {
         if( empty( $data ) ) $data = $_POST;
+        if( isset( $data[ 'del' ] ) && $data[ 'del' ] ) {
+            // delete this entity. 
+            $this->entity->toDelete( true );
+        }
         $this->loadData( $data );
         $this->loadLink( $data, $method );
         return $this;
