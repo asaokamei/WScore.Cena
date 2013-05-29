@@ -8,6 +8,8 @@ use WScore\Html\Elements;
 /**
  * Class CenaManager
  * @package WScore\Cena
+ *
+ * @cacheable
  */
 class Html
 {

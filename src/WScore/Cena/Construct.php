@@ -4,6 +4,8 @@ namespace WScore\Cena;
 /**
  * Class CenaManager
  * @package WScore\Cena
+ * 
+ * @cacheable
  */
 class Construct
 {
