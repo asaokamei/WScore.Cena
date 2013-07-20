@@ -53,6 +53,7 @@ class CenaManager
      */
     public function useEntity( $entity )
     {
+        $short = $entity;
         if( strpos( $entity, '\\' ) !== false ) {
             $short = substr( $entity, strrpos( $entity, '\\' )+1 );
         }
