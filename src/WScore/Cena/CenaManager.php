@@ -42,12 +42,22 @@ class CenaManager
      */
     public $processor;
 
+    /**
+     */
     public function __construct()
     {
         $this->cena = $this->construct->cena;
         $this->connector = $this->construct->connector;
         $this->processor->setCenaManager( $this );
     }
+
+    /**
+     * @return \WScore\DataMapper\EntityManager
+     */
+    public function em() {
+        return $this->em;
+    }
+    
     /**
      * @param string|EntityInterface $entity
      */
