@@ -78,7 +78,7 @@ class CenaManager
         foreach( $this->models as $model => $class ) {
             if( $entity === $class ) return $model;
         }
-        return false;
+        return $entity;
     }
 
     /**
