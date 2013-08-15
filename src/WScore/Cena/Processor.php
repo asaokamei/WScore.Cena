@@ -44,6 +44,10 @@ class Processor
                 foreach( $ids as $id => $info ) {
                     $cenaID = $this->cm->construct->construct( $model, $type, $id );
                     $data[ $cenaID ] = $info;
+                    if( $type == EntityAbstract::_ID_TYPE_VIRTUAL && $id > EntityAbstract::$_id_for_new ) {
+                        // keep up with the largest *new* id.
+                        EntityAbstract::$_id_for_new = $id+1;
+                    }
                 }
             }
         }
