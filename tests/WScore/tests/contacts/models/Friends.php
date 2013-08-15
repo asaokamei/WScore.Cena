@@ -17,7 +17,7 @@ class Friends extends Model
     {
         parent::__construct();
         $csv = file_get_contents( __DIR__ . '/friends.csv' );
-        $this->property->prepare( $csv );
+        $this->property->setupCsv( $csv );
         $this->setGenderChoice();
     }
 

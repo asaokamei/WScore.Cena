@@ -17,12 +17,12 @@ class Contacts extends Model
     {
         parent::__construct();
         $csv = file_get_contents( __DIR__ . '/contacts.csv' );
-        $this->property->prepare( $csv );
-        $this->property->selectors[ 'type' ][ 'choice' ] = array(
+        $this->property->setupCsv( $csv );
+        $this->property->setProperty( 'type', 'choice', array(
             array( self::TYPE_TELEPHONE, 'telephone' ),
             array( self::TYPE_EMAIL,     'e-mails' ),
             array( self::TYPE_SOCIAL,    'social' ),
-        );
+        ) );
     }
 
     public function setupTable()
