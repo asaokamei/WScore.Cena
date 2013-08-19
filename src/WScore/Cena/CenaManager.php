@@ -151,4 +151,11 @@ class CenaManager
     {
         return $this->role->applyRole( $entity, '\WScore\Cena\Role\CenaIO' );
     }
+
+    /**
+     * @return RoleInterface
+     */
+    public function getCenaIO() {
+        return $this->role->getRole( '\WScore\Cena\Role\CenaIO' );
+    }
 }
