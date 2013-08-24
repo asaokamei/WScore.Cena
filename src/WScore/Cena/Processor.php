@@ -61,10 +61,11 @@ class Processor
     public function process( $data )
     {
         $isValid = true;
+        $role = $this->cm->getCenaIO();
         foreach( $data as $cenaID => $info )
         {
             $entity = $this->cm->getCenaEntity( $cenaID );
-            $role   = $this->cm->applyCenaIO( $entity );
+            $role->register( $entity );
             $role->load( $info );
             $isValid &= $role->validate();
         }
