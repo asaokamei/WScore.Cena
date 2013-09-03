@@ -39,10 +39,10 @@ class Processor
     {
         $source = $this->source[ $this->cm->cena ];
         $data   = array();
-        foreach( $source as $model => $types ) {
+        foreach( $source as $entityName => $types ) {
             foreach( $types as $type => $ids ) {
                 foreach( $ids as $id => $info ) {
-                    $cenaID = $this->cm->construct->construct( $model, $type, $id );
+                    $cenaID = $this->cm->construct->construct( $entityName, $type, $id );
                     $data[ $cenaID ] = $info;
                     if( $type == EntityAbstract::_ID_TYPE_VIRTUAL && $id > EntityAbstract::$_id_for_new ) {
                         // keep up with the largest *new* id.
@@ -84,18 +84,18 @@ class Processor
     public function clean( $entity, $name, $type=null )
     {
         if( !$type ) $type = EntityAbstract::_ID_TYPE_VIRTUAL;
-        $model = $this->cm->getModelFromEntityClass( $entity );
+        $entity = $this->cm->getEntityShortNameFromClass( $entity );
         $cena  = $this->cm->cena;
         if( !isset( $this->source[ $cena ] ) ) return $this;
-        if( !isset( $this->source[ $cena ][ $model ] ) ) return $this;
-        if( !isset( $this->source[ $cena ][ $model ][ $type ] ) ) return $this;
-        foreach( $this->source[ $cena ][ $model ][ $type ] as $id => $data ) {
+        if( !isset( $this->source[ $cena ][ $entity ] ) ) return $this;
+        if( !isset( $this->source[ $cena ][ $entity ][ $type ] ) ) return $this;
+        foreach( $this->source[ $cena ][ $entity ][ $type ] as $id => $data ) {
             if( !isset( $data[ 'prop' ][ $name ] ) || empty( $data[ 'prop' ][ $name ] ) ) {
-                unset( $this->source[ $cena ][ $model ][ $type ][ $id ] );
+                unset( $this->source[ $cena ][ $entity ][ $type ][ $id ] );
             }
         }
-        if( empty( $this->source[ $cena ][ $model ][ $type ] ) ) {
-            unset( $this->source[ $cena ][ $model ][ $type ] );
+        if( empty( $this->source[ $cena ][ $entity ][ $type ] ) ) {
+            unset( $this->source[ $cena ][ $entity ][ $type ] );
         }
         return $this;
     }

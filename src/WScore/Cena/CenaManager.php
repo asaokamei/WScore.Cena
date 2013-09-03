@@ -16,7 +16,10 @@ class CenaManager
 
     public $connector;
 
-    public $models = array();
+    /**
+     * @var array
+     */
+    public $entityMap = array();
 
     /**
      * @Inject
@@ -67,16 +70,16 @@ class CenaManager
         if( strpos( $entity, '\\' ) !== false ) {
             $short = substr( $entity, strrpos( $entity, '\\' )+1 );
         }
-        $this->models[ $short ] = $entity;
+        $this->entityMap[ $short ] = $entity;
     }
 
     /**
      * @param $entity
      * @return bool|int|string
      */
-    public function getModelFromEntityClass( $entity ) {
-        foreach( $this->models as $model => $class ) {
-            if( $entity === $class ) return $model;
+    public function getEntityShortNameFromClass( $entity ) {
+        foreach( $this->entityMap as $short => $class ) {
+            if( $entity === $class ) return $short;
         }
         return $entity;
     }
@@ -104,18 +107,18 @@ class CenaManager
     }
 
     /**
-     * @param string $model
+     * @param string $entityName
      * @param string $type
      * @param string $id
      * @return EntityInterface
      */
-    public function getEntity( $model, $type, $id )
+    public function getEntity( $entityName, $type, $id )
     {
-        if( isset( $this->models[ $model ] ) ) $model = $this->models[ $model ];
+        if( isset( $this->entityMap[ $entityName ] ) ) $entityName = $this->entityMap[ $entityName ];
         if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
-            return $this->em->newEntity( $model, array(), $id );
+            return $this->em->newEntity( $entityName, array(), $id );
         }
-        $collection = $this->em->fetch( $model, $id );
+        $collection = $this->em->fetch( $entityName, $id );
         return $collection[0];
     }
 
