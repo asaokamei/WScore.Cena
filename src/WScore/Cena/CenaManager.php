@@ -27,12 +27,20 @@ class CenaManager
      */
     public $construct;
 
-    /** 
+    /**
+     * to be replaced with $ema. 
+     * 
      * @Inject
      * @var \WScore\DataMapper\EntityManager 
      */
     public $em;
-
+    
+    /**
+     * @Inject
+     * @var \WScore\Cena\EmAdapter\EmaWScore
+     */
+    public $ema;
+    
     /**
      * @Inject
      * @var \WScore\DataMapper\RoleManager 
@@ -58,7 +66,7 @@ class CenaManager
      * @return \WScore\DataMapper\EntityManager
      */
     public function em() {
-        return $this->em;
+        return $this->ema;
     }
     
     /**
@@ -98,7 +106,7 @@ class CenaManager
             return $entities;
         }
         $cenaId = $this->construct->unCompose( $cenaId );
-        if( $entity = $this->em->getByCenaId( $cenaId ) ) {
+        if( $entity = $this->ema->getEntityByCenaId( $cenaId ) ) {
             return $entity;
         }
         $list = $this->construct->decompose( $cenaId );
@@ -115,11 +123,7 @@ class CenaManager
     public function getEntity( $entityName, $type, $id )
     {
         if( isset( $this->entityMap[ $entityName ] ) ) $entityName = $this->entityMap[ $entityName ];
-        if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
-            return $this->em->newEntity( $entityName, array(), $id );
-        }
-        $collection = $this->em->fetch( $entityName, $id );
-        return $collection[0];
+        return $this->ema->fetchEntity( $entityName, $type, $id );
     }
 
     // +----------------------------------------------------------------------+
