@@ -27,6 +27,7 @@ class EntityMap
     public function getEntityName( $short ) {
         return ( isset( $this->entityMap[ $short ] ) ) ?  $this->entityMap[ $short ] : $short;
     }
+    
     /**
      * @param $entity
      * @return bool|int|string

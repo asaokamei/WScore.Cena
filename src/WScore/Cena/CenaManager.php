@@ -61,13 +61,14 @@ class CenaManager
         $this->cena = $this->construct->cena;
         $this->connector = $this->construct->connector;
         $this->processor->setCenaManager( $this );
+        $this->ema->setEntityMap( $this->entityMap );
     }
 
     /**
      * @return \WScore\DataMapper\EntityManager
      */
     public function em() {
-        return $this->ema;
+        return $this->ema->em();
     }
     
     /**
@@ -101,6 +102,7 @@ class CenaManager
             return $entities;
         }
         $cenaId = $this->construct->unCompose( $cenaId );
+        return $entity = $this->ema->getEntityByCenaId( $cenaId );
         if( $entity = $this->ema->getEntityByCenaId( $cenaId ) ) {
             return $entity;
         }

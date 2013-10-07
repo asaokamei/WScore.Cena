@@ -11,7 +11,24 @@ class EmaWScore implements EmAdapterInterface
      * @var \WScore\DataMapper\EntityManager
      */
     public $em;
+    
+    /**
+     * @Inject
+     * @var \WScore\Cena\Construct
+     */
+    public $construct;
 
+    /**
+     * @var \WScore\Cena\EntityMap
+     */
+    public $entityMap;
+
+    /**
+     * @param \WScore\Cena\EntityMap $map
+     */
+    public function setEntityMap( $map ) {
+        $this->entityMap = $map;
+    }
     /**
      * @return \WScore\DataMapper\EntityManager
      */
@@ -27,6 +44,7 @@ class EmaWScore implements EmAdapterInterface
      */
     public function fetchEntity( $model, $type, $id )
     {
+        $model = $this->entityMap->getEntityName( $model );
         if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
             return $this->em->newEntity( $model, array(), $id );
         }
@@ -40,7 +58,12 @@ class EmaWScore implements EmAdapterInterface
      */
     public function getEntityByCenaId( $cenaId )
     {
-        return $this->em->getByCenaId( $cenaId );
+        if( $entity = $this->em->getByCenaId( $cenaId ) ) {
+            return $entity;
+        }
+        $list = $this->construct->decompose( $cenaId );
+        if( count( $list ) < 3 ) return null;
+        return $this->fetchEntity( $list[0], $list[1], $list[2] );
     }
 
     public function getCenaIdByEntity( $entity )

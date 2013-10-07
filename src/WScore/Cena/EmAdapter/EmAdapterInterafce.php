@@ -3,6 +3,7 @@ namespace WScore\Cena\EmAdapter;
 
 interface EmAdapterInterface
 {
+    public function setEntityMap( $map );
     public function em();
     
     /**
