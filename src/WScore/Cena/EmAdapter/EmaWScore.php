@@ -4,6 +4,14 @@ namespace WScore\Cena\EmAdapter;
 use WScore\Cena\EmAdapter\EmAdapterInterface;
 use WScore\DataMapper\Entity\EntityInterface;
 
+/**
+ * Class EmaWScore
+ *
+ * @package WScore\Cena\EmAdapter
+ *
+ * @singleton
+ * 
+ */
 class EmaWScore implements EmAdapterInterface
 {
     /**

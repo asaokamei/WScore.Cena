@@ -103,12 +103,6 @@ class CenaManager
         }
         $cenaId = $this->construct->unCompose( $cenaId );
         return $entity = $this->ema->getEntityByCenaId( $cenaId );
-        if( $entity = $this->ema->getEntityByCenaId( $cenaId ) ) {
-            return $entity;
-        }
-        $list = $this->construct->decompose( $cenaId );
-        if( count( $list ) < 3 ) return null;
-        return $this->getEntity( $list[0], $list[1], $list[2] );
     }
 
     /**
