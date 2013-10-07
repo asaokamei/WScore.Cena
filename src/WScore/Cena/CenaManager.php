@@ -29,14 +29,6 @@ class CenaManager
     public $construct;
 
     /**
-     * to be replaced with $ema. 
-     * 
-     * @Inject
-     * @var \WScore\DataMapper\EntityManager 
-     */
-    public $em;
-    
-    /**
      * @Inject
      * @var \WScore\Cena\EmAdapter\EmaWScore
      */
@@ -113,7 +105,6 @@ class CenaManager
      */
     public function getEntity( $entityName, $type, $id )
     {
-        $entityName = $this->entityMap->getEntityName( $entityName );
         return $this->ema->fetchEntity( $entityName, $type, $id );
     }
 
