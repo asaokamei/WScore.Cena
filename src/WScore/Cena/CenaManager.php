@@ -17,9 +17,10 @@ class CenaManager
     public $connector;
 
     /**
-     * @var array
+     * @Inject
+     * @var \WScore\Cena\EntityMap
      */
-    public $entityMap = array();
+    public $entityMap;
 
     /**
      * @Inject
@@ -74,22 +75,16 @@ class CenaManager
      */
     public function useEntity( $entity )
     {
-        $short = $entity;
-        if( strpos( $entity, '\\' ) !== false ) {
-            $short = substr( $entity, strrpos( $entity, '\\' )+1 );
-        }
-        $this->entityMap[ $short ] = $entity;
+        $this->entityMap->useEntity( $entity );
     }
 
     /**
      * @param $entity
      * @return bool|int|string
      */
-    public function getEntityShortNameFromClass( $entity ) {
-        foreach( $this->entityMap as $short => $class ) {
-            if( $entity === $class ) return $short;
-        }
-        return $entity;
+    public function getEntityShortNameFromClass( $entity ) 
+    {
+        return $this->entityMap->getEntityShortNameFromClass( $entity );
     }
 
     /**
@@ -122,7 +117,7 @@ class CenaManager
      */
     public function getEntity( $entityName, $type, $id )
     {
-        if( isset( $this->entityMap[ $entityName ] ) ) $entityName = $this->entityMap[ $entityName ];
+        $entityName = $this->entityMap->getEntityName( $entityName );
         return $this->ema->fetchEntity( $entityName, $type, $id );
     }
 
