@@ -2,6 +2,7 @@
 namespace WScore\Cena\EmAdapter;
 
 use WScore\Cena\EmAdapter\EmAdapterInterface;
+use WScore\Cena\EntityMap;
 use WScore\DataMapper\Entity\EntityInterface;
 use WScore\Selector\ElementAbstract;
 use WScore\Selector\ElementItemizedAbstract;
@@ -29,12 +30,13 @@ class EmaWScore implements EmAdapterInterface
     public $construct;
 
     /**
-     * @var \WScore\Cena\EntityMap
+     * @var EntityMap
      */
     public $entityMap;
 
     /**
-     * @param \WScore\Cena\EntityMap $map
+     * @param EntityMap $map
+     * @return mixed|void
      */
     public function setEntityMap( $map ) {
         $this->entityMap = $map;
@@ -47,10 +49,10 @@ class EmaWScore implements EmAdapterInterface
     }
 
     /**
-     * @param $model
-     * @param $type
-     * @param $id
-     * @return EntityInterface
+     * @param string $model
+     * @param string $type
+     * @param string $id
+     * @return mixed|EntityInterface
      */
     public function fetchEntity( $model, $type, $id )
     {
@@ -63,7 +65,7 @@ class EmaWScore implements EmAdapterInterface
     }
 
     /**
-     * @param $cenaId
+     * @param string $cenaId
      * @return bool|EntityInterface
      */
     public function getEntityByCenaId( $cenaId )
@@ -76,11 +78,20 @@ class EmaWScore implements EmAdapterInterface
         return $this->fetchEntity( $list[0], $list[1], $list[2] );
     }
 
+    /**
+     * @param EntityInterface $entity
+     * @return string|void
+     */
     public function getCenaIdByEntity( $entity )
     {
-        // TODO: Implement getCenaIdByEntity() method.
+        return  $entity->getCenaId();
     }
 
+    /**
+     * @param EntityInterface $entity
+     * @param array $data
+     * @return mixed|void
+     */
     public function loadData( $entity, $data )
     {
         $model = $this->em->getModel( $entity );
@@ -90,6 +101,12 @@ class EmaWScore implements EmAdapterInterface
         }
     }
 
+    /**
+     * @param EntityInterface $entity
+     * @param string $name
+     * @param EntityInterface $target
+     * @return mixed|void
+     */
     public function relate( $entity, $name, $target )
     {
         $this->em->relation( $entity, $name )->set( $target );
@@ -104,10 +121,5 @@ class EmaWScore implements EmAdapterInterface
     {
         $model = $this->em->getModel( $entity );
         return $model->getSelector( $key );
-    }
-
-    public function load( $entity, $data )
-    {
-        // TODO: Implement load() method.
     }
 }

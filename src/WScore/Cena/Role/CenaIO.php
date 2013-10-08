@@ -1,7 +1,6 @@
 <?php
 namespace WScore\Cena\Role;
 
-use \WScore\DataMapper\Entity\EntityInterface;
 use WScore\DataMapper\Role\DataIO;
 use WScore\Html\Elements;
 
