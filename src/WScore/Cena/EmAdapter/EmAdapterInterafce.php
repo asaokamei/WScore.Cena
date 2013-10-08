@@ -30,7 +30,7 @@ interface EmAdapterInterface
     
     public function relate( $entity, $target );
 
-    public function getForm( $entity, $key );
+    public function getSelector( $entity, $key );
     
     public function load( $entity, $data );
 }

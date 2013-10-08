@@ -3,6 +3,8 @@ namespace WScore\Cena\EmAdapter;
 
 use WScore\Cena\EmAdapter\EmAdapterInterface;
 use WScore\DataMapper\Entity\EntityInterface;
+use WScore\Selector\ElementAbstract;
+use WScore\Selector\ElementItemizedAbstract;
 
 /**
  * Class EmaWScore
@@ -89,9 +91,15 @@ class EmaWScore implements EmAdapterInterface
         // TODO: Implement relate() method.
     }
 
-    public function getForm( $entity, $key )
+    /**
+     * @param EntityInterface $entity
+     * @param string $key
+     * @return ElementAbstract|ElementItemizedAbstract
+     */
+    public function getSelector( $entity, $key )
     {
-        // TODO: Implement getForm() method.
+        $model = $this->em->getModel( $entity );
+        return $model->getSelector( $key );
     }
 
     public function load( $entity, $data )

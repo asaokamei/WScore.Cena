@@ -33,7 +33,10 @@ class CenaIO extends DataIO
      */
     public function popHtml( $name, $html_type=null )
     {
-        $html = parent::popHtml( $name, $html_type );
+        if( !$html_type ) $html_type = $this->htmlType;
+        $form  = $this->cena->ema()->getSelector( $this->entity, $name );
+        $value = isset( $this->entity->$name ) ? $this->entity->$name: '';
+        $html  = $form->popHtml( $html_type, $value );
         $this->populateFormName( $html );
         return $html;
     }
