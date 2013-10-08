@@ -66,7 +66,7 @@ class CenaIO extends DataIO
     {
         if( empty( $data ) ) $data = $_POST;
         $data = $this->cena->getDataForCenaId( $data, $this->entity->getCenaId() );
-        parent::load( $data[ 'prop' ] );
+        $this->cena->ema()->loadData( $this->entity, $data[ 'prop' ] );
         return $this;
     }
 

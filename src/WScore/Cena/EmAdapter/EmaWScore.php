@@ -81,9 +81,13 @@ class EmaWScore implements EmAdapterInterface
         // TODO: Implement getCenaIdByEntity() method.
     }
 
-    public function property( $entity, $key, $value )
+    public function loadData( $entity, $data )
     {
-        // TODO: Implement property() method.
+        $model = $this->em->getModel( $entity );
+        $data = $model->protect( $data );
+        foreach( $data as $key => $value ) {
+            $entity[ $key ] = $value;
+        }
     }
 
     public function relate( $entity, $target )

@@ -26,7 +26,7 @@ interface EmAdapterInterface
     
     public function getCenaIdByEntity( $entity );
 
-    public function property( $entity, $key, $value );
+    public function loadData( $entity, $data );
     
     public function relate( $entity, $target );
 
