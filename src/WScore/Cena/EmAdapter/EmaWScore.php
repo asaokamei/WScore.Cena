@@ -90,9 +90,9 @@ class EmaWScore implements EmAdapterInterface
         }
     }
 
-    public function relate( $entity, $target )
+    public function relate( $entity, $name, $target )
     {
-        // TODO: Implement relate() method.
+        $this->em->relation( $entity, $name )->set( $target );
     }
 
     /**

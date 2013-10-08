@@ -28,7 +28,7 @@ interface EmAdapterInterface
 
     public function loadData( $entity, $data );
     
-    public function relate( $entity, $target );
+    public function relate( $entity, $name, $target );
 
     public function getSelector( $entity, $key );
     

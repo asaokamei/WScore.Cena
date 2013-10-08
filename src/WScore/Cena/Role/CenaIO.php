@@ -82,7 +82,7 @@ class CenaIO extends DataIO
         if( empty( $data[ 'link' ] ) ) return $this;
         foreach( $data[ 'link' ] as $name => $link ) {
             $target = $this->cena->getCenaEntity( $link );
-            parent::relate( $name, $target, $method );
+            $this->cena->ema()->relate( $this->entity, $name, $target );
         }
         return $this;
     }
