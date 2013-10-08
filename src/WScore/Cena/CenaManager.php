@@ -57,6 +57,12 @@ class CenaManager
     }
 
     /**
+     * @return EmAdapter\EmaWScore
+     */
+    public function ema() {
+        return $this->ema;
+    }
+    /**
      * @return \WScore\DataMapper\EntityManager
      */
     public function em() {
