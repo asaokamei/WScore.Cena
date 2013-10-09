@@ -122,4 +122,35 @@ class EmaWScore implements EmAdapterInterface
         $model = $this->em->getModel( $entity );
         return $model->getSelector( $key );
     }
+
+    /**
+     * mark an $entity object as delete.
+     *
+     * @param EntityInterface $entity
+     * @return bool
+     */
+    public function isDeleted( $entity )
+    {
+        return $entity->toDelete();
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @return bool
+     */
+    public function isRetrieved( $entity )
+    {
+        return $entity->isIdPermanent();
+    }
+
+    /**
+     * @param object|EntityInterface $object
+     * @return bool|mixed
+     */
+    public function isCollection( $object ) {
+        if( $object instanceof EntityInterface ) {
+            return false;
+        }
+        return true;
+    }
 }

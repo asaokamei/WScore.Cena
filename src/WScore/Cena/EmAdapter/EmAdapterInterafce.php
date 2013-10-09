@@ -44,6 +44,30 @@ interface EmAdapterInterface
     public function getCenaIdByEntity( $entity );
 
     /**
+     * returns if the $entity object is marked as delete.
+     * 
+     * @param object $entity
+     * @return mixed
+     */
+    public function isDeleted( $entity );
+
+    /**
+     * returns if the $entity object is retrieved from data base. 
+     * 
+     * @param $entity
+     * @return mixed
+     */
+    public function isRetrieved( $entity );
+
+    /**
+     * returns if the $object is a collection of entities or not. 
+     * 
+     * @param object $object
+     * @return mixed
+     */
+    public function isCollection( $object );
+    
+    /**
      * populate an entity with array data.
      *
      * @param object $entity

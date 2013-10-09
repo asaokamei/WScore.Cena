@@ -1,7 +1,6 @@
 <?php
 namespace WScore\Cena;
 
-use \WScore\DataMapper\Entity\EntityInterface;
 use \WScore\DataMapper\Entity\Collection;
 use WScore\Html\Elements;
 
@@ -26,15 +25,21 @@ class Html
     public $forms;
 
     /**
+     * @Inject
+     * @var \WScore\Cena\EmAdapter\EmaWScore
+     */
+    public $ema;
+
+    /**
      * @param \WScore\Html\Elements $html
-     * @param EntityInterface       $entity
+     * @param object                $entity
      * @param string                $type
      * @return void
      */
     public function populateFormName( $html, $entity, $type='prop' )
     {
         if( ! $html instanceof Elements ) return;
-        $cenaId = $entity->getCenaId();
+        $cenaId = $this->ema->getCenaIdByEntity( $entity );
         $format = $this->construct->composeFormName( $cenaId, $type );
         $makeCena = function( $form ) use( $format ) {
             /** @var $tags Elements */
@@ -58,24 +63,21 @@ class Html
      * creates a hidden tag for a relation (HasOne or HasRefs).
      *
      * @param string                               $name
-     * @param EntityInterface                      $entity
-     * @param Collection|EntityInterface           $targets
+     * @param object                               $entity
+     * @param array|object            $targets
      * @return \WScore\Html\Elements
      */
     public function composeHiddenLinks( $name, $entity, $targets )
     {
         /** @var $hideDivs \WScore\Html\Elements */
         $hideDivs = $this->forms->elements->div();
-        if( $targets instanceof EntityInterface ) {
+        if( !$this->ema->isCollection( $targets ) ) {
             $targets = array( $targets );
         }
         elseif( empty( $targets ) ) return $hideDivs;
 
         foreach( $targets as $target ) {
-
-            /** @var $target \WScore\DataMapper\Entity\EntityInterface */
-            $targetCenaId = $this->construct->compose( $target->getCenaId() );
-            $tag = $this->forms->input( 'hidden', $name, $targetCenaId )->_setMultipleName();
+            $tag = $this->composeHiddenLink( $name, $target );
             $hideDivs->_contain( $tag );
         }
         $this->populateFormName( $hideDivs, $entity, 'link' );
@@ -84,7 +86,7 @@ class Html
 
     /**
      * @param string $name
-     * @param EntityInterface $entity
+     * @param object $entity
      * @return \WScore\Html\Elements Elements
      */
     public function composeEmptyHiddenLink( $name, $entity )
@@ -97,7 +99,7 @@ class Html
     /**
      * creates a select box for a relation (many-to-many).
      *
-     * @param EntityInterface                      $entity
+     * @param object                               $entity
      * @param string                               $name
      * @param \WScore\DataMapper\Entity\Collection $targets
      * @param \WScore\DataMapper\Entity\Collection $lists
@@ -109,15 +111,17 @@ class Html
     {
         $links = array();
         foreach( $lists as $lst ) {
-            /** @var $lst EntityInterface */
-            $cenaId = $this->construct->compose( $lst->getCenaId() );
+            $cenaId = $this->construct->compose(
+                $this->ema->getCenaIdByEntity( $lst )
+            );
             $links[] = array( $cenaId, $lst[ $display ] );
         }
         $selected = array();
         if( !empty( $targets ) )
             foreach( $targets as $tgt ) {
-                /** @var $tgt EntityInterface */
-                $selected[] = $this->construct->compose( $tgt->getCenaId() );
+                $selected[] = $this->construct->compose(
+                    $this->ema->getCenaIdByEntity( $tgt )
+                );
             }
         /** @var $select Elements */
         $select = $this->forms->$select( $name, $links, $selected, array( 'multiple'=>true ) );
@@ -126,31 +130,31 @@ class Html
     }
 
     /**
-     * @param EntityInterface   $entity
+     * @param object   $entity
      * @return Elements
      */
     public function composeDeleteCheck( $entity )
     {
         $tag = $this->forms->input( 'checkbox', '', '1' );
         $this->populateFormName( $tag, $entity, 'del' );
-        if( $entity->toDelete() ) {
+        if( $this->ema->isDeleted( $entity ) ) {
             $tag->checked( true );
         }
         return $tag;
     }
 
     /**
-     * @param EntityInterface   $entity
+     * @param object   $entity
      * @return Elements
      */
     public function composeDeleteSelect( $entity )
     {
         $links  = array();
         $selected = array();
-        if( $entity->isIdPermanent() ) {
+        if( $this->ema->isRetrieved( $entity ) ) {
             $links[] = array( '0', 'edit' );
             $links[] = array( '1', 'delete' );
-            if( $entity->toDelete() ) {
+            if( $this->ema->isDeleted( $entity ) ) {
                 $selected[] = '1';
             }
         } else {
@@ -159,5 +163,19 @@ class Html
         $select = $this->forms->select( '', $links, $selected );
         $this->populateFormName( $select, $entity, 'del' );
         return $select;
+    }
+
+    /**
+     * @param $name
+     * @param $target
+     * @return Elements
+     */
+    public function composeHiddenLink( $name, $target )
+    {
+        $targetCenaId = $this->construct->compose(
+            $this->ema->getCenaIdByEntity( $target )
+        );
+        $tag = $this->forms->input( 'hidden', $name, $targetCenaId )->_setMultipleName();
+        return $tag;
     }
 }
