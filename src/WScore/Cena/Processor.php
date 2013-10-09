@@ -42,7 +42,7 @@ class Processor
         foreach( $source as $entityName => $types ) {
             foreach( $types as $type => $ids ) {
                 foreach( $ids as $id => $info ) {
-                    $cenaID = $this->cm->construct->construct( $entityName, $type, $id );
+                    $cenaID = $this->cm->construct->compose( $entityName, $type, $id );
                     $data[ $cenaID ] = $info;
                     if( $type == EntityAbstract::_ID_TYPE_VIRTUAL && $id > EntityAbstract::$_id_for_new ) {
                         // keep up with the largest *new* id.

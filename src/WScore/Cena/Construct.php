@@ -20,7 +20,7 @@ class Construct
      * @param string $cenaId
      * @return string
      */
-    public function compose( $cenaId )
+    public function appendHeader( $cenaId )
     {
         if( substr( $cenaId, strlen( $this->cena )+1 ) !== $this->cena . $this->connector ) {
             $cenaId = $this->cena . $this->connector . $cenaId;
@@ -28,7 +28,7 @@ class Construct
         return $cenaId;
     }
     
-    public function unCompose( $cenaId )
+    public function removeHeader( $cenaId )
     {
         $head = $this->cena . $this->connector;
         if( substr( $cenaId, 0, strlen( $head ) ) === $head ) {
@@ -50,7 +50,15 @@ class Construct
         return $list;
     }
 
-    public function construct( $model, $type, $id ) {
+    /**
+     * compose a CenaID from components.
+     * 
+     * @param $model
+     * @param $type
+     * @param $id
+     * @return string
+     */
+    public function compose( $model, $type, $id ) {
         return implode( $this->connector, array( $model, $type, $id ) );
     }
 

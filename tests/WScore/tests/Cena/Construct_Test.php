@@ -19,14 +19,14 @@ class Construct_Test extends \PHPUnit_Framework_TestCase
     function test_unCompose()
     {
         $id   = 'Cena.friend.model.id';
-        $unId = $this->con->unCompose( $id );
+        $unId = $this->con->removeHeader( $id );
         $this->assertNotEquals( $id, $unId );
         $this->assertEquals( 'friend.model.id', $unId );
     }
     function test_unCompose_ignores_non_cenaID()
     {
         $id   = 'Not.Cena.ID';
-        $unId = $this->con->unCompose( $id );
+        $unId = $this->con->removeHeader( $id );
         $this->assertEquals( $id, $unId );
     }
 }

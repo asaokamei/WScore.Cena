@@ -99,7 +99,7 @@ class CenaManager
             }
             return $entities;
         }
-        $cenaId = $this->construct->unCompose( $cenaId );
+        $cenaId = $this->construct->removeHeader( $cenaId );
         return $entity = $this->ema->getEntityByCenaId( $cenaId );
     }
 

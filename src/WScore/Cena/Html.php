@@ -111,7 +111,7 @@ class Html
     {
         $links = array();
         foreach( $lists as $lst ) {
-            $cenaId = $this->construct->compose(
+            $cenaId = $this->construct->appendHeader(
                 $this->ema->getCenaIdByEntity( $lst )
             );
             $links[] = array( $cenaId, $lst[ $display ] );
@@ -119,7 +119,7 @@ class Html
         $selected = array();
         if( !empty( $targets ) )
             foreach( $targets as $tgt ) {
-                $selected[] = $this->construct->compose(
+                $selected[] = $this->construct->appendHeader(
                     $this->ema->getCenaIdByEntity( $tgt )
                 );
             }
@@ -172,7 +172,7 @@ class Html
      */
     public function composeHiddenLink( $name, $target )
     {
-        $targetCenaId = $this->construct->compose(
+        $targetCenaId = $this->construct->appendHeader(
             $this->ema->getCenaIdByEntity( $target )
         );
         $tag = $this->forms->input( 'hidden', $name, $targetCenaId )->_setMultipleName();
