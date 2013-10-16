@@ -4,8 +4,14 @@ namespace WScore\Cena\Role;
 use WScore\DataMapper\Role\DataIO;
 use WScore\Html\Elements;
 
-class CenaIO extends DataIO
+class CenaIO //extends DataIO
 {
+    /** @var object */
+    public $entity;
+
+    /** @var string */
+    public $htmlType = 'html';
+
     /**
      * @Inject
      * @var \WScore\Cena\CenaManager
@@ -17,6 +23,51 @@ class CenaIO extends DataIO
      * @var \WScore\Cena\Html
      */
     public $html;
+
+    // +----------------------------------------------------------------------+
+    /**
+     * @param object    $entity
+     */
+    public function register( $entity ) {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return object
+     */
+    public function retrieve() {
+        return $this->entity;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getId() {
+        return $this->cena->ema()->getId( $this->entity );
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdName() {
+        return $this->cena->ema()->getIdName( $this->entity );
+    }
+
+    // +----------------------------------------------------------------------+
+    //  Presentation
+    // +----------------------------------------------------------------------+
+    /**
+     * @param null|string $type
+     * @return string
+     */
+    public function setHtmlType( $type=null ) {
+        if( isset( $type ) ) $this->htmlType = $type;
+        return $this->htmlType;
+    }
+
+    public function form( $name ) {
+        return $this->cena->ema()->getSelector( $this->entity, $name );
+    }
 
     /**
      * pops value of the $name (property name).
@@ -33,11 +84,21 @@ class CenaIO extends DataIO
     public function popHtml( $name, $html_type=null )
     {
         if( !$html_type ) $html_type = $this->htmlType;
-        $form  = $this->cena->ema()->getSelector( $this->entity, $name );
+        $form  = $this->form( $name );
         $value = isset( $this->entity->$name ) ? $this->entity->$name: '';
         $html  = $form->popHtml( $html_type, $value );
         $this->populateFormName( $html );
         return $html;
+    }
+
+    /**
+     * validates the entity's property values.
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        return $this->cena->ema()->validate( $this->entity );
     }
 
     /**
@@ -70,6 +131,15 @@ class CenaIO extends DataIO
     }
 
     /**
+     * @param string $name
+     * @param object|object[] $targets
+     */
+    public function relate( $name, $targets )
+    {
+        $this->cena->ema()->relate( $this->entity, $name, $targets );
+    }
+
+    /**
      * @param array  $data
      * @param string $method
      * @return self
@@ -81,7 +151,7 @@ class CenaIO extends DataIO
         if( empty( $data[ 'link' ] ) ) return $this;
         foreach( $data[ 'link' ] as $name => $link ) {
             $target = $this->cena->getCenaEntity( $link );
-            $this->cena->ema()->relate( $this->entity, $name, $target );
+            $this->relate( $name, $target );
         }
         return $this;
     }

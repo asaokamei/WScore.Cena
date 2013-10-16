@@ -28,6 +28,18 @@ interface EmAdapterInterface
     public function fetchEntity( $model, $type, $id );
 
     /**
+     * @param object $entity
+     * @return mixed
+     */
+    public function getId( $entity );
+
+    /**
+     * @param object $entity
+     * @return mixed
+     */
+    public function getIdName( $entity );
+
+    /**
      * get an entity from entity manager collection. 
      * 
      * @param string $cenaId
@@ -94,4 +106,10 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function getSelector( $entity, $key );
+
+    /**
+     * @param object $entity
+     * @return mixed
+     */
+    public function validate( $entity );
 }
