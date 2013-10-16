@@ -213,4 +213,42 @@ class EmaWScore implements EmAdapterInterface
     {
         return $entity->getIdName();
     }
+
+    /**
+     * @param EntityInterface $entity
+     * @return mixed
+     */
+    public function isValid( $entity )
+    {
+        return $entity->getEntityAttribute( self::IS_VALID_NAME );
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @return mixed
+     */
+    public function resetValid( $entity )
+    {
+        $entity->setEntityAttribute( self::IS_VALID_NAME, null );
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @param string $key
+     * @return mixed
+     */
+    public function getError( $entity, $key )
+    {
+        return $entity->getPropertyAttribute( $key, self::ERROR_NAME );
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @param string $key
+     * @return mixed
+     */
+    public function isError( $entity, $key )
+    {
+        return !!$entity->getPropertyAttribute( $key, self::ERROR_NAME );
+    }
 }

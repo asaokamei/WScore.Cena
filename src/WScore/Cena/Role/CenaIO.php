@@ -1,7 +1,6 @@
 <?php
 namespace WScore\Cena\Role;
 
-use WScore\DataMapper\Role\DataIO;
 use WScore\Html\Elements;
 
 class CenaIO //extends DataIO
@@ -89,16 +88,6 @@ class CenaIO //extends DataIO
         $html  = $form->popHtml( $html_type, $value );
         $this->populateFormName( $html );
         return $html;
-    }
-
-    /**
-     * validates the entity's property values.
-     *
-     * @return bool
-     */
-    public function validate()
-    {
-        return $this->cena->ema()->validate( $this->entity );
     }
 
     /**
@@ -215,5 +204,52 @@ class CenaIO //extends DataIO
     {
         $select = $this->html->composeDeleteSelect( $this->entity );
         return $select;
+    }
+
+    // +----------------------------------------------------------------------+
+    //  validation
+    // +----------------------------------------------------------------------+
+    /**
+     * validates the entity's property values.
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        return $this->cena->ema()->validate( $this->entity );
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isValid() {
+        return $this->cena->ema()->isValid( $this->entity );
+    }
+
+    /**
+     * resets valid state of the entity.
+     * @return self
+     */
+    public function resetValid() {
+        $this->cena->ema()->resetValid( $this->entity );
+        return $this;
+    }
+
+    /**
+     * returns error message if any.
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function getError( $key ) {
+        return $this->cena->ema()->getError( $this->entity, $key );
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function isError( $key ) {
+        return $this->cena->ema()->isError( $this->entity, $key );
     }
 }
