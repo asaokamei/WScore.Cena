@@ -2,7 +2,7 @@
     "name": "wscore/cena",
     "description": "Resource oriented data transfer agent.",
     "require": {
-        "wscore/datamapper": "dev-master"
+        "wscore/datamapper": "0.1"
     },
     "authors": [
         {
