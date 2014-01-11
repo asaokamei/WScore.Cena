@@ -97,45 +97,4 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function relate( $entity, $name, $target );
-
-    /**
-     * get a selector object for presentation of the $key of $entity object.
-     *
-     * @param object $entity
-     * @param string $key
-     * @return mixed
-     */
-    public function getSelector( $entity, $key );
-
-    /**
-     * @param object $entity
-     * @return mixed
-     */
-    public function validate( $entity );
-
-    /**
-     * @param object $entity
-     * @return mixed
-     */
-    public function isValid( $entity );
-
-    /**
-     * @param object $entity
-     * @return mixed
-     */
-    public function resetValid( $entity );
-
-    /**
-     * @param object $entity
-     * @param string $key
-     * @return mixed
-     */
-    public function getError( $entity, $key );
-
-    /**
-     * @param object $entity
-     * @param string $key
-     * @return mixed
-     */
-    public function isError( $entity, $key );
 }
