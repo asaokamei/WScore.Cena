@@ -40,22 +40,6 @@ interface EmAdapterInterface
     public function getIdName( $entity );
 
     /**
-     * get an entity from entity manager collection. 
-     * 
-     * @param string $cenaId
-     * @return object
-     */
-    public function getEntityByCenaId( $cenaId );
-
-    /**
-     * get CenaID from an entity object.
-     *
-     * @param object $entity
-     * @return string
-     */
-    public function getCenaIdByEntity( $entity );
-
-    /**
      * returns if the $entity object is marked as delete.
      * 
      * @param object $entity
