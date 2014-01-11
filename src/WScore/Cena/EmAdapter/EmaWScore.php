@@ -61,18 +61,18 @@ class EmaWScore implements EmAdapterInterface
     }
 
     /**
-     * @param string $model
+     * @param string $class
      * @param string $type
      * @param string $id
      * @return mixed|EntityInterface
      */
-    public function fetchEntity( $model, $type, $id )
+    public function fetchEntity( $class, $type, $id )
     {
-        $model = $this->entityMap->getEntityName( $model );
+        $class = $this->entityMap->getEntityName( $class );
         if( $type == EntityInterface::_ID_TYPE_VIRTUAL ) {
-            return $this->em->newEntity( $model, array(), $id );
+            return $this->em->newEntity( $class, array(), $id );
         }
-        $collection = $this->em->fetch( $model, $id );
+        $collection = $this->em->fetch( $class, $id );
         return $collection[0];
     }
 
