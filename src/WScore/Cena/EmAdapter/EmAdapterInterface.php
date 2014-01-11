@@ -20,12 +20,27 @@ interface EmAdapterInterface
      * fetch a entity from database or forge a new object.
      * should use getEntityByCenaId, instead.
      *
-     * @param string $model
+     * @param string $class
      * @param string $type
      * @param string $id
      * @return mixed
      */
-    public function fetchEntity( $model, $type, $id );
+    public function fetchEntity( $class, $type, $id );
+
+    /**
+     * @param       $class
+     * @param array $data
+     * @return object
+     */
+    public function newEntity( $class, $data=array() );
+
+
+    /**
+     * @param $class
+     * @param $id
+     * @return null|object
+     */
+    public function findEntity( $class, $id );
 
     /**
      * @param object $entity
