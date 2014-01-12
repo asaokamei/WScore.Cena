@@ -15,6 +15,11 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function em();
+
+    /**
+     * saves entities to database.
+     */
+    public function save();
     
     /**
      * fetch a entity from database or forge a new object.
